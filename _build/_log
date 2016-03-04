@@ -1,0 +1,16 @@
+### Starting build.
+Backtrace:
+                      - Failed to build the target ps4.ml.byte
+                          - Building ps4.ml.byte:
+                              - Building ps4.ml.cmo:
+                                  - Failed to build all of these:
+                                      - Building ps4.ml.ml:
+                                          - Failed to build all of these:
+                                              - Building ps4.ml.mly
+                                              - Building ps4.ml.mll
+                                      - Building ps4.ml.mli:
+                                          - Building ps4.ml.mly
+                                      - Building ps4.ml.mlpack
+                                      - Building ps4.ml.mli:
+                                          - Building ps4.ml.mly
+# Compilation unsuccessful.

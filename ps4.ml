@@ -194,16 +194,37 @@ module BinSTree(C : COMPARABLE) : (BINTREE with type elt = C.t) =
      *
      * Hint: use C.compare. See delete for inspiration
      *)
-    let rec insert (x : elt) (t : tree) : tree 
-      = failwith "insert not implemented"
+    let rec insert (x : elt) (t : tree) : tree =
+      match t with
+      | Leaf -> Branch (Leaf, [x], Leaf)
+      | Branch (left, lst, right) -> 
+        match lst with
+        | [] -> t
+        | head::tail ->
+          match C.compare x head with
+          | Less -> Branch (insert x left, lst, right)
+          | Greater -> Branch (left, lst, insert x right)
+          | Equal -> Branch (left, x::lst, right)
+    ;;
+
 							  
     (* Returns true if the element x is in tree t, else false *)
     (* Hint: multiple values might compare Equal to x, but
      * that doesn't necessarily mean that x itself is in the
      * tree.
      *)
-    let rec search (x : elt) (t : tree) : bool 
-      = failwith "search not implemented"
+    let rec search (x : elt) (t : tree) : bool =
+      match t with
+      | Leaf -> false
+      | Branch (l, lst, r) ->
+        match lst with
+        | [] -> t
+        | head::tail ->
+          match C.compare x head with
+          | Less -> search x l
+          | Greater -> search x r
+          | Equal -> true
+    ;;
 							  
     (* A useful function for removing the node with the minimum value from
      * a binary tree, returning that node and the new tree.
@@ -263,12 +284,22 @@ module BinSTree(C : COMPARABLE) : (BINTREE with type elt = C.t) =
      * The exception "EmptyTree", defined within this module, might come in
      * handy. *)
 							  
-    let getmin (t : tree) : elt = failwith "getmin not implemented"
-					   
+    let rec getmin (t : tree) : elt =
+      match t with
+      | Leaf -> raise EmptyTree
+      | Branch (Leaf, lst, r) -> List.hd (List.rev lst)
+      | Branch (l, lst, r) -> getmin l
+    ;;
+        			   
     (* Simply returns the maximum value of the tree t. Similarly should
      * return the last element in the matching list. *)
     let rec getmax (t : tree) : elt = failwith "getmin not implemented"
-					       
+			match t with
+      | Leaf -> raise EmptyTree
+      | Branch (l, lst, Leaf) -> List.hd (List.rev lst)
+      | Branch (l, lst, r) -> getmax r
+    ;;
+
     (* Prints binary search tree as a string - nice for testing! *)
     let to_string (t: tree) = 
       let list_to_string (lst: 'a list) =
